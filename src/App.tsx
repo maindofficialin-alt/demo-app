@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { 
   ShoppingBag, Search, MapPin, Star, Zap, 
-  Send, Bell, Layers, Lock, LogOut, X, 
+  Bell, Layers, Lock, LogOut, X, 
   ChevronRight, Monitor, BarChart2, Filter, Package,
   User, CheckCircle2, DollarSign, Activity, Cpu, ArrowUpRight,
   Building, RefreshCw, CreditCard, ShieldCheck, Truck
