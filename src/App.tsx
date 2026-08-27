@@ -4,9 +4,9 @@ import {
   Send, Bell, Layers, Lock, LogOut, X, 
   ChevronRight, Monitor, BarChart2, Filter, Package,
   User, CheckCircle2, DollarSign, Activity, Cpu, ArrowUpRight,
-  Building, RefreshCw
+  Building, RefreshCw, CreditCard, ShieldCheck, Truck
 } from 'lucide-react';
-import type { Order, OrderStatus, CatalogItem } from './types';
+import type { Order, OrderStatus, CatalogItem, ShippingAddress } from './types';
 
 interface ProductItem extends CatalogItem {
   rating: number;
@@ -103,6 +103,17 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [cart, setCart] = useState<Record<string, number>>({});
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [checkoutStep, setCheckoutStep] = useState<'cart' | 'shipping_payment'>('cart');
+
+  // Shipping Address Form State
+  const [shipName, setShipName] = useState<string>('Retailer East Branch - John Doe');
+  const [shipStreet, setShipStreet] = useState<string>('742 Evergreen Terrace, Suite 100');
+  const [shipCityZip, setShipCityZip] = useState<string>('New York, NY 10001');
+  const [shipPhone, setShipPhone] = useState<string>('+1 (555) 019-2834');
+
+  // Payment Method State
+  const [selectedPayment, setSelectedPayment] = useState<string>('Wholesale Net 30 Line of Credit');
+  const [cardNumber, setCardNumber] = useState<string>('•••• •••• •••• 4242');
 
   // Admin Interactive Drill-down View State
   const [adminTab, setAdminTab] = useState<'overview' | 'revenue' | 'pipeline' | 'kafka' | 'hubs'>('overview');
@@ -117,7 +128,14 @@ export default function App() {
       retailerId: 'retailer_east',
       franchiseId: 'East Coast Logistics Hub',
       status: 'Delivered',
-      timestamp: new Date(Date.now() - 7200000).toLocaleTimeString()
+      timestamp: new Date(Date.now() - 7200000).toLocaleTimeString(),
+      shippingAddress: {
+        fullName: 'Retailer East Outlet',
+        street: '742 Evergreen Terrace, Suite 100',
+        cityStateZip: 'New York, NY 10001',
+        phone: '+1 (555) 019-2834'
+      },
+      paymentMethod: 'Wholesale Net 30 Line of Credit'
     },
     {
       id: 'ORD-9023',
@@ -126,7 +144,14 @@ export default function App() {
       retailerId: 'retailer_west',
       franchiseId: 'West Coast Distribution Center',
       status: 'Dispatched',
-      timestamp: new Date(Date.now() - 3600000).toLocaleTimeString()
+      timestamp: new Date(Date.now() - 3600000).toLocaleTimeString(),
+      shippingAddress: {
+        fullName: 'Retailer West Depot',
+        street: '100 Bay Street, Suite 400',
+        cityStateZip: 'San Francisco, CA 94105',
+        phone: '+1 (555) 982-1144'
+      },
+      paymentMethod: 'Credit Card (Visa ending in 4242)'
     }
   ]);
 
@@ -183,9 +208,10 @@ export default function App() {
     setCurrentUser(null);
     setCart({});
     setIsCartOpen(false);
+    setCheckoutStep('cart');
   };
 
-  // Place Order Handler
+  // Place Order Handler with Shipping & Payment details
   const handlePlaceOrder = () => {
     if (!currentUser || !currentUser.retailerId) return;
 
@@ -201,6 +227,13 @@ export default function App() {
     const orderId = `ORD-${Math.floor(1000 + Math.random() * 9000)}`;
     const assignedFranchise = RETAILER_FRANCHISE_MAP[currentUser.retailerId] || 'East Coast Logistics Hub';
     
+    const shippingInfo: ShippingAddress = {
+      fullName: shipName,
+      street: shipStreet,
+      cityStateZip: shipCityZip,
+      phone: shipPhone
+    };
+
     const newOrder: Order = {
       id: orderId,
       items,
@@ -208,12 +241,15 @@ export default function App() {
       retailerId: currentUser.retailerId,
       franchiseId: assignedFranchise,
       status: 'Placed',
-      timestamp: new Date().toLocaleTimeString()
+      timestamp: new Date().toLocaleTimeString(),
+      shippingAddress: shippingInfo,
+      paymentMethod: selectedPayment
     };
 
     setOrders(prev => [newOrder, ...prev]);
     setCart({});
     setIsCartOpen(false);
+    setCheckoutStep('cart');
     setRetailerTab('orders');
     showToast('Wholesale Order Placed!', `Order ${orderId} routed to ${assignedFranchise}`);
   };
@@ -382,7 +418,7 @@ export default function App() {
             <span className="ecom-action-val">Orders ({getScopedRetailerOrders().length})</span>
           </div>
 
-          <button className="ecom-cart-btn" onClick={() => setIsCartOpen(true)}>
+          <button className="ecom-cart-btn" onClick={() => { setIsCartOpen(true); setCheckoutStep('cart'); }}>
             <ShoppingBag size={18} />
             <span>Cart</span>
             <span className="cart-badge-num">{getCartTotalItems()}</span>
@@ -536,7 +572,7 @@ export default function App() {
           {retailerTab === 'orders' && (
             <div>
               <h2 style={{ fontSize: '24px', fontWeight: '800', marginBottom: '4px' }}>Your Orders</h2>
-              <p style={{ color: '#52525b', fontSize: '14px', marginBottom: '24px' }}>Track packages & review shipment history for {currentUser.name}</p>
+              <p style={{ color: '#52525b', fontSize: '14px', marginBottom: '24px' }}>Track packages & review shipment details for {currentUser.name}</p>
 
               {getScopedRetailerOrders().length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '60px 0', color: '#64748b', background: '#ffffff', borderRadius: '16px', border: '1px solid #e2ddd3' }}>
@@ -551,6 +587,7 @@ export default function App() {
 
                   return (
                     <div key={order.id} className="amazon-tracker-card">
+                      {/* Top Summary */}
                       <div className="amazon-tracker-top-summary">
                         <div>
                           <div className="summary-block-label">ORDER PLACED</div>
@@ -564,7 +601,7 @@ export default function App() {
 
                         <div>
                           <div className="summary-block-label">SHIP TO</div>
-                          <div className="summary-block-val">{currentUser.name}</div>
+                          <div className="summary-block-val">{order.shippingAddress?.fullName || currentUser.name}</div>
                         </div>
 
                         <div>
@@ -573,6 +610,7 @@ export default function App() {
                         </div>
                       </div>
 
+                      {/* Delivery Status Title */}
                       <div className="amazon-delivery-status-header">
                         {order.status === 'Delivered' ? '✓ Delivered Today' : 
                          order.status === 'Dispatched' ? '🚚 Out for Delivery' : 
@@ -583,6 +621,7 @@ export default function App() {
                         Package processed at <strong>{order.franchiseId}</strong>
                       </div>
 
+                      {/* Stepper Progress Line */}
                       <div className="amazon-progress-container">
                         <div className="amazon-progress-line-bg"></div>
                         <div className="amazon-progress-line-fill" style={{ width: `${progressPct}%` }}></div>
@@ -600,7 +639,7 @@ export default function App() {
                             return (
                               <div key={step.state} className="amazon-step-item">
                                 <div className={`amazon-step-circle ${isDone ? 'done' : isActive ? 'active' : ''}`}>
-                                  {isDone ? <CheckCircle2 size={18} /> : isActive ? (idx + 1) : (idx + 1)}
+                                  {isDone ? <CheckCircle2 size={18} /> : (idx + 1)}
                                 </div>
                                 <span className={`amazon-step-title ${isDone ? 'done' : isActive ? 'active' : ''}`}>
                                   {step.label}
@@ -611,13 +650,29 @@ export default function App() {
                         </div>
                       </div>
 
+                      {/* Shipping Address & Payment Method Details */}
                       <div className="fedex-tracking-detail-box">
+                        <div>
+                          <div style={{ fontWeight: 'bold', marginBottom: '2px', color: '#27272a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <MapPin size={14} style={{ color: '#ea580c' }} /> Delivery Address:
+                          </div>
+                          <div style={{ color: '#52525b', fontSize: '11px' }}>
+                            {order.shippingAddress?.street || '742 Evergreen Terrace'}, {order.shippingAddress?.cityStateZip || 'New York, NY 10001'}
+                          </div>
+                        </div>
+
+                        <div>
+                          <div style={{ fontWeight: 'bold', marginBottom: '2px', color: '#27272a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <CreditCard size={14} style={{ color: '#059669' }} /> Payment Method:
+                          </div>
+                          <div style={{ color: '#059669', fontSize: '11px', fontWeight: 'bold' }}>
+                            {order.paymentMethod || 'Wholesale Net 30 Line of Credit'}
+                          </div>
+                        </div>
+
                         <div>
                           <span style={{ color: '#71717a' }}>Tracking ID:</span> <strong style={{ fontFamily: 'var(--mono)', color: '#27272a' }}>FEDEX-AZA-{order.id.replace('ORD-','')}</strong>
                           <span style={{ marginLeft: '12px', color: '#71717a' }}>Carrier:</span> <strong style={{ color: '#059669' }}>FedEx Ground Express</strong>
-                        </div>
-                        <div style={{ color: '#52525b' }}>
-                          Items: {order.items.map(i => `${i.name} (x${i.quantity})`).join(', ')}
                         </div>
                       </div>
                     </div>
@@ -630,63 +685,173 @@ export default function App() {
         </div>
       )}
 
-      {/* CART DRAWER */}
+      {/* CHECKOUT MODAL DRAWER WITH SHIPPING ADDRESS & PAYMENT SELECTOR */}
       {isCartOpen && (
         <div className="cart-overlay" onClick={() => setIsCartOpen(false)}>
           <div className="cart-drawer-card" onClick={(e) => e.stopPropagation()}>
             <div>
               <div className="cart-drawer-header">
-                <span className="cart-drawer-title">Shopping Cart ({getCartTotalItems()} items)</span>
+                <span className="cart-drawer-title">
+                  {checkoutStep === 'cart' ? `Shopping Cart (${getCartTotalItems()} items)` : 'Checkout: Shipping & Payment'}
+                </span>
                 <button className="cart-drawer-close" onClick={() => setIsCartOpen(false)}>
                   <X size={24} />
                 </button>
               </div>
 
-              <div className="cart-items-list">
-                {Object.entries(cart).filter(([_, qty]) => qty > 0).map(([id, qty]) => {
-                  const item = ECOM_PRODUCTS.find(p => p.id === id)!;
-                  return (
-                    <div key={id} className="cart-item-row">
-                      <div>
-                        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{item.name}</div>
-                        <div style={{ fontSize: '12px', color: '#059669', fontWeight: 'bold' }}>${item.price.toFixed(2)}</div>
+              {checkoutStep === 'cart' ? (
+                /* CART ITEMS LIST VIEW */
+                <div className="cart-items-list">
+                  {Object.entries(cart).filter(([_, qty]) => qty > 0).map(([id, qty]) => {
+                    const item = ECOM_PRODUCTS.find(p => p.id === id)!;
+                    return (
+                      <div key={id} className="cart-item-row">
+                        <div>
+                          <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{item.name}</div>
+                          <div style={{ fontSize: '12px', color: '#059669', fontWeight: 'bold' }}>${item.price.toFixed(2)}</div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <button className="btn-qty" onClick={() => updateQty(id, -1)}>-</button>
+                          <span style={{ fontWeight: 'bold' }}>{qty}</span>
+                          <button className="btn-qty" onClick={() => updateQty(id, 1)}>+</button>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {getCartTotalItems() === 0 && (
+                    <div style={{ textAlign: 'center', padding: '40px 0', color: '#71717a' }}>
+                      Your shopping cart is empty.
+                    </div>
+                  )}
+                </div>
+              ) : (
+                /* CHECKOUT FORM VIEW: SHIPPING ADDRESS & PAYMENT SELECTOR */
+                <div style={{ padding: '16px 0' }}>
+                  
+                  {/* Step 1: Shipping Address */}
+                  <div className="checkout-section-box">
+                    <div className="checkout-section-title">
+                      <MapPin size={16} style={{ color: '#ea580c' }} /> 1. Shipping Address Details
+                    </div>
+
+                    <div className="checkout-input-grid">
+                      <div className="checkout-field" style={{ gridColumn: '1 / -1' }}>
+                        <label className="checkout-field-label">Full Name / Business Name</label>
+                        <input 
+                          type="text"
+                          value={shipName}
+                          onChange={(e) => setShipName(e.target.value)}
+                          className="checkout-input"
+                        />
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <button className="btn-qty" onClick={() => updateQty(id, -1)}>-</button>
-                        <span style={{ fontWeight: 'bold' }}>{qty}</span>
-                        <button className="btn-qty" onClick={() => updateQty(id, 1)}>+</button>
+                      <div className="checkout-field" style={{ gridColumn: '1 / -1' }}>
+                        <label className="checkout-field-label">Street Address</label>
+                        <input 
+                          type="text"
+                          value={shipStreet}
+                          onChange={(e) => setShipStreet(e.target.value)}
+                          className="checkout-input"
+                        />
+                      </div>
+
+                      <div className="checkout-field">
+                        <label className="checkout-field-label">City, State, ZIP Code</label>
+                        <input 
+                          type="text"
+                          value={shipCityZip}
+                          onChange={(e) => setShipCityZip(e.target.value)}
+                          className="checkout-input"
+                        />
+                      </div>
+
+                      <div className="checkout-field">
+                        <label className="checkout-field-label">Phone Number</label>
+                        <input 
+                          type="text"
+                          value={shipPhone}
+                          onChange={(e) => setShipPhone(e.target.value)}
+                          className="checkout-input"
+                        />
                       </div>
                     </div>
-                  );
-                })}
-
-                {getCartTotalItems() === 0 && (
-                  <div style={{ textAlign: 'center', padding: '40px 0', color: '#71717a' }}>
-                    Your shopping cart is empty.
                   </div>
-                )}
-              </div>
+
+                  {/* Step 2: Payment Method */}
+                  <div className="checkout-section-box">
+                    <div className="checkout-section-title">
+                      <CreditCard size={16} style={{ color: '#059669' }} /> 2. Choose Payment Method
+                    </div>
+
+                    <div className="payment-options-grid">
+                      {[
+                        { id: 'Wholesale Net 30 Line of Credit', title: '🏛️ Wholesale Net 30 Line of Credit', sub: 'Auto-approved $50,000 line of credit' },
+                        { id: 'Credit / Debit Card', title: '💳 Credit / Debit Card', sub: 'Visa, MasterCard, Amex (Ending in 4242)' },
+                        { id: 'Direct ACH Wire Transfer', title: '⚡ Direct ACH Wire Transfer', sub: 'Instant wholesale bank transfer' },
+                        { id: 'Cash on Delivery (Pay on Fulfillment)', title: '💵 Cash on Delivery (Pay on Delivery)', sub: 'Pay upon truck arrival at hub' }
+                      ].map(opt => (
+                        <div 
+                          key={opt.id}
+                          className={`payment-card-option ${selectedPayment === opt.id ? 'selected' : ''}`}
+                          onClick={() => setSelectedPayment(opt.id)}
+                        >
+                          <div>
+                            <div className="payment-title-text">{opt.title}</div>
+                            <div className="payment-sub-text">{opt.sub}</div>
+                          </div>
+                          {selectedPayment === opt.id && <CheckCircle2 size={18} style={{ color: '#ea580c' }} />}
+                        </div>
+                      ))}
+                    </div>
+
+                    {selectedPayment === 'Credit / Debit Card' && (
+                      <div style={{ marginTop: '12px' }}>
+                        <label className="checkout-field-label">Card Number</label>
+                        <input 
+                          type="text" 
+                          value={cardNumber}
+                          onChange={(e) => setCardNumber(e.target.value)}
+                          className="checkout-input"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              )}
             </div>
 
             {getCartTotalItems() > 0 && (
               <div className="cart-drawer-footer">
                 <div className="summary-row">
-                  <span>Subtotal</span>
+                  <span>Items Subtotal</span>
                   <span>${getCartTotalPrice().toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
-                  <span>Estimated Delivery</span>
+                  <span>Shipping & Handling</span>
                   <span style={{ color: '#059669', fontWeight: 'bold' }}>FREE Express</span>
                 </div>
                 <div className="summary-row" style={{ fontSize: '18px', fontWeight: '800', marginTop: '8px', color: '#27272a' }}>
-                  <span>Total</span>
+                  <span>Total Amount</span>
                   <span>${getCartTotalPrice().toFixed(2)}</span>
                 </div>
 
-                <button className="btn-proceed-checkout" onClick={handlePlaceOrder}>
-                  <Send size={18} /> Proceed to Wholesale Checkout
-                </button>
+                {checkoutStep === 'cart' ? (
+                  <button className="btn-proceed-checkout" onClick={() => setCheckoutStep('shipping_payment')}>
+                    <Truck size={18} /> Proceed to Shipping & Payment Details
+                  </button>
+                ) : (
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                    <button className="admin-pill-btn" onClick={() => setCheckoutStep('cart')}>
+                      Back to Cart
+                    </button>
+                    <button className="btn-proceed-checkout" style={{ flex: 1 }} onClick={handlePlaceOrder}>
+                      <ShieldCheck size={18} /> Place Your Wholesale Order
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -779,9 +944,7 @@ export default function App() {
         </div>
       )}
 
-      {/* ----------------------------------------------------------- */}
-      {/* INTERACTIVE ADMIN TELEMETRY DASHBOARD                       */}
-      {/* ----------------------------------------------------------- */}
+      {/* ADMIN DASHBOARD */}
       {appMode === 'admin' && (
         <div className="admin-app-wrapper">
           {currentUser.role !== 'admin' ? (
@@ -797,7 +960,6 @@ export default function App() {
             </div>
           ) : (
             <div>
-              {/* Header Title */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <div>
                   <h1 style={{ fontSize: '24px', fontWeight: '800' }}>Master Executive Telemetry Dashboard</h1>
@@ -808,7 +970,6 @@ export default function App() {
                 </span>
               </div>
 
-              {/* Navigation Pill Tabs */}
               <div className="admin-nav-pills">
                 <button 
                   className={`admin-pill-btn ${adminTab === 'overview' ? 'active' : ''}`}
@@ -846,11 +1007,9 @@ export default function App() {
                 </button>
               </div>
 
-              {/* OVERVIEW TAB WITH CLICKABLE KPI CARDS */}
               {adminTab === 'overview' && (
                 <div>
                   <div className="admin-kpi-grid">
-                    {/* KPI Card 1: Revenue (Clickable) */}
                     <div className="admin-kpi-card" onClick={() => setAdminTab('revenue')}>
                       <div>
                         <div className="admin-kpi-header">
@@ -867,7 +1026,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* KPI Card 2: Total Orders (Clickable) */}
                     <div className="admin-kpi-card" onClick={() => setAdminTab('pipeline')}>
                       <div>
                         <div className="admin-kpi-header">
@@ -884,7 +1042,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* KPI Card 3: Active Orders (Clickable) */}
                     <div className="admin-kpi-card" onClick={() => setAdminTab('pipeline')}>
                       <div>
                         <div className="admin-kpi-header">
@@ -901,7 +1058,6 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* KPI Card 4: System Health (Clickable) */}
                     <div className="admin-kpi-card" onClick={() => setAdminTab('kafka')}>
                       <div>
                         <div className="admin-kpi-header">
@@ -919,7 +1075,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Regional Hub Performance Grid */}
                   <div className="admin-chart-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                       <h3 style={{ fontSize: '16px', fontWeight: '700' }}>Regional Distribution Hub Performance</h3>
@@ -953,7 +1108,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* REVENUE DEEP-DIVE SCREEN */}
               {adminTab === 'revenue' && (
                 <div className="drilldown-panel-card">
                   <div className="drilldown-header">
@@ -1006,7 +1160,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* ORDER PIPELINE SCREEN */}
               {adminTab === 'pipeline' && (
                 <div className="drilldown-panel-card">
                   <div className="drilldown-header">
@@ -1048,7 +1201,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* KAFKA TELEMETRY SCREEN */}
               {adminTab === 'kafka' && (
                 <div className="drilldown-panel-card">
                   <div className="drilldown-header">
@@ -1100,7 +1252,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* REGIONAL HUBS SCREEN */}
               {adminTab === 'hubs' && (
                 <div className="drilldown-panel-card">
                   <div className="drilldown-header">

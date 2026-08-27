@@ -7,6 +7,13 @@ export interface OrderItem {
   price: number;
 }
 
+export interface ShippingAddress {
+  fullName: string;
+  street: string;
+  cityStateZip: string;
+  phone: string;
+}
+
 export interface Order {
   id: string;
   items: OrderItem[];
@@ -15,6 +22,8 @@ export interface Order {
   franchiseId: string;
   status: OrderStatus;
   timestamp: string;
+  shippingAddress?: ShippingAddress;
+  paymentMethod?: string;
 }
 
 export interface CatalogItem {

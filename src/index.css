@@ -64,6 +64,97 @@ html, body {
 }
 
 /* ---------------------------------------------------- */
+/* CHECKOUT FLOW FORM & PAYMENT METHOD SELECTOR         */
+/* ---------------------------------------------------- */
+
+.checkout-section-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.checkout-section-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkout-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.checkout-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.checkout-field-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.checkout-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+  outline: none;
+  font-family: var(--sans);
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.checkout-input:focus {
+  border-color: var(--accent-orange);
+  background: white;
+}
+
+.payment-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.payment-card-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.payment-card-option:hover, .payment-card-option.selected {
+  border-color: var(--accent-orange);
+  background: var(--accent-orange-bg);
+}
+
+.payment-title-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.payment-sub-text {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ---------------------------------------------------- */
 /* TOP E-COMMERCE NAVBAR (RESPONSIVE MOBILE)            */
 /* ---------------------------------------------------- */
 
@@ -223,7 +314,6 @@ html, body {
   font-weight: 800;
 }
 
-/* Sub-header Navigation Bar */
 .ecom-sub-nav {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
@@ -251,10 +341,6 @@ html, body {
 .sub-nav-link:hover, .sub-nav-link.active {
   color: var(--accent-orange);
 }
-
-/* ---------------------------------------------------- */
-/* HERO DEALS BANNER                                    */
-/* ---------------------------------------------------- */
 
 .ecom-hero-banner {
   background: linear-gradient(135deg, #fff7ed, #fef3c7, #f0fdf4);
@@ -317,10 +403,6 @@ html, body {
   text-transform: uppercase;
   font-weight: 700;
 }
-
-/* ---------------------------------------------------- */
-/* MAIN E-COMMERCE LAYOUT GRID                         */
-/* ---------------------------------------------------- */
 
 .ecom-main-layout {
   display: grid;
@@ -483,10 +565,6 @@ html, body {
   justify-content: center;
 }
 
-/* ---------------------------------------------------- */
-/* CART DRAWER MODAL (RESPONSIVE SLIDE-OVER)            */
-/* ---------------------------------------------------- */
-
 .cart-overlay {
   position: fixed;
   inset: 0;
@@ -499,13 +577,14 @@ html, body {
 
 .cart-drawer-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
   background: var(--bg-main);
   height: 100%;
   padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow-y: auto;
 }
 
 .cart-drawer-header {
@@ -576,10 +655,6 @@ html, body {
   justify-content: center;
   gap: 8px;
 }
-
-/* ---------------------------------------------------- */
-/* AUTHENTIC AMAZON LOGIN PAGE (RESPONSIVE)            */
-/* ---------------------------------------------------- */
 
 .amazon-login-wrapper {
   flex: 1;
@@ -698,10 +773,6 @@ html, body {
   border-radius: 4px;
   text-transform: uppercase;
 }
-
-/* ---------------------------------------------------- */
-/* PACKAGE TRACKER (RESPONSIVE HORIZONTAL STEPPER)      */
-/* ---------------------------------------------------- */
 
 .amazon-tracker-card {
   background: var(--bg-card);
@@ -847,10 +918,6 @@ html, body {
   gap: 8px;
 }
 
-/* ---------------------------------------------------- */
-/* FRANCHISE PORTAL & ADMIN (RESPONSIVE GRID)           */
-/* ---------------------------------------------------- */
-
 .franchise-app-wrapper, .admin-app-wrapper {
   flex: 1;
   display: flex;
@@ -994,10 +1061,6 @@ html, body {
   align-items: flex-start;
   max-width: 400px;
 }
-
-/* ---------------------------------------------------- */
-/* MEDIA QUERIES FOR MOBILE PHONES (< 640px)            */
-/* ---------------------------------------------------- */
 
 @media (max-width: 640px) {
   .ecom-top-header {
