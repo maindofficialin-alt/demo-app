@@ -13,16 +13,45 @@ interface ProductItem extends CatalogItem {
   reviews: number;
   mrp: number;
   image: string;
+  colorName: string;
+  colorHex: string;
 }
 
-// Mock Amazon / Flipkart style apparel & textile wholesale catalog
+// Expanded Amazon / Flipkart style wholesale fabric & apparel catalog with color variants
 const ECOM_PRODUCTS: ProductItem[] = [
-  { id: 'cat_01', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 1420, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png' },
-  { id: 'cat_02', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.7, reviews: 980, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png' },
-  { id: 'cat_03', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.9, reviews: 2150, category: 'Apparel & Clothing', icon: '👔', image: '/assets/linen_shirts.png' },
-  { id: 'cat_04', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 1120, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png' },
-  { id: 'cat_05', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.9, reviews: 3400, category: 'Bed Sheets & Bedding', icon: '🛏️', image: '/assets/bed_sheets.png' },
-  { id: 'cat_06', name: 'Raw Organic Linen Fabric Bolt (10 Yards)', price: 64.99, mrp: 89.99, rating: 4.8, reviews: 790, category: 'Linen & Fabrics', icon: '🧵', image: '/assets/fabric_bolt.png' }
+  // Apparel & Clothing - T-Shirts
+  { id: 'cat_01a', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 1420, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Bright White', colorHex: '#ffffff' },
+  { id: 'cat_01b', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.9, reviews: 1180, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Onyx Black', colorHex: '#18181b' },
+  { id: 'cat_01c', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.7, reviews: 920, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Navy Blue', colorHex: '#1e3a8a' },
+  { id: 'cat_01d', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 850, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Heather Grey', colorHex: '#9ca3af' },
+
+  // Apparel & Clothing - Denim Jeans
+  { id: 'cat_02a', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.7, reviews: 980, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png', colorName: 'Raw Indigo Blue', colorHex: '#1d4ed8' },
+  { id: 'cat_02b', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.9, reviews: 1250, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png', colorName: 'Jet Black', colorHex: '#09090b' },
+  { id: 'cat_02c', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.6, reviews: 740, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png', colorName: 'Vintage Light Blue', colorHex: '#60a5fa' },
+
+  // Apparel & Clothing - Formal Linen Shirts
+  { id: 'cat_03a', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.9, reviews: 2150, category: 'Apparel & Clothing', icon: '👔', image: '/assets/linen_shirts.png', colorName: 'Oatmeal Beige', colorHex: '#d4b996' },
+  { id: 'cat_03b', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.8, reviews: 1640, category: 'Apparel & Clothing', icon: '👔', image: '/assets/linen_shirts.png', colorName: 'Pure White', colorHex: '#ffffff' },
+  { id: 'cat_03c', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.7, reviews: 1100, category: 'Apparel & Clothing', icon: '👔', image: '/assets/linen_shirts.png', colorName: 'Sky Blue', colorHex: '#93c5fd' },
+  { id: 'cat_03d', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.8, reviews: 890, category: 'Apparel & Clothing', icon: '👔', image: '/assets/linen_shirts.png', colorName: 'Olive Green', colorHex: '#4d7c0f' },
+
+  // Curtains & Drapes
+  { id: 'cat_04a', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 1120, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Emerald Green', colorHex: '#047857' },
+  { id: 'cat_04b', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.9, reviews: 1430, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Royal Navy', colorHex: '#1e1b4b' },
+  { id: 'cat_04c', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.7, reviews: 880, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Wine Crimson', colorHex: '#881337' },
+  { id: 'cat_04d', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 950, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Charcoal Grey', colorHex: '#3f3f46' },
+
+  // Bed Sheets & Bedding
+  { id: 'cat_05a', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.9, reviews: 3400, category: 'Bed Sheets & Bedding', icon: '🛏️', image: '/assets/bed_sheets.png', colorName: 'Snow White', colorHex: '#f8fafc' },
+  { id: 'cat_05b', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.8, reviews: 2100, category: 'Bed Sheets & Bedding', icon: '🛏️', image: '/assets/bed_sheets.png', colorName: 'Slate Grey', colorHex: '#64748b' },
+  { id: 'cat_05c', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.7, reviews: 1540, category: 'Bed Sheets & Bedding', icon: '🛏️', image: '/assets/bed_sheets.png', colorName: 'Blush Pink', colorHex: '#fbcfe8' },
+  { id: 'cat_05d', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.9, reviews: 1890, category: 'Bed Sheets & Bedding', icon: '🛏️', image: '/assets/bed_sheets.png', colorName: 'Sage Green', colorHex: '#a7f3d0' },
+
+  // Linen & Fabrics
+  { id: 'cat_06a', name: 'Raw Organic Linen Fabric Bolt (10 Yards)', price: 64.99, mrp: 89.99, rating: 4.8, reviews: 790, category: 'Linen & Fabrics', icon: '🧵', image: '/assets/fabric_bolt.png', colorName: 'Natural Flax', colorHex: '#e5d5c5' },
+  { id: 'cat_06b', name: 'Raw Organic Linen Fabric Bolt (10 Yards)', price: 64.99, mrp: 89.99, rating: 4.9, reviews: 920, category: 'Linen & Fabrics', icon: '🧵', image: '/assets/fabric_bolt.png', colorName: 'Bleached White', colorHex: '#f8fafc' },
+  { id: 'cat_06c', name: 'Raw Organic Linen Fabric Bolt (10 Yards)', price: 64.99, mrp: 89.99, rating: 4.7, reviews: 610, category: 'Linen & Fabrics', icon: '🧵', image: '/assets/fabric_bolt.png', colorName: 'Terracotta Rust', colorHex: '#c2410c' }
 ];
 
 const RETAILER_FRANCHISE_MAP: Record<string, string> = {
@@ -101,6 +130,7 @@ export default function App() {
   // Retailer App States
   const [retailerTab, setRetailerTab] = useState<'catalog' | 'orders'>('catalog');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedColor, setSelectedColor] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [cart, setCart] = useState<Record<string, number>>({});
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -264,8 +294,11 @@ export default function App() {
   // Filtered Products
   const filteredProducts = ECOM_PRODUCTS.filter(product => {
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    const matchesSearch = searchQuery === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    const matchesColor = selectedColor === 'All' || product.colorName === selectedColor;
+    const matchesSearch = searchQuery === '' || 
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      product.colorName.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesColor && matchesSearch;
   });
 
   // Scoped Data
@@ -508,7 +541,7 @@ export default function App() {
                   <div className="filter-section-title">
                     <Filter size={14} style={{ display: 'inline', marginRight: '6px' }} /> Categories
                   </div>
-                  <div className="filter-list">
+                  <div className="filter-list" style={{ marginBottom: '20px' }}>
                     {['All', 'Apparel & Clothing', 'Curtains & Drapes', 'Bed Sheets & Bedding', 'Linen & Fabrics'].map(cat => (
                       <div 
                         key={cat}
@@ -519,6 +552,40 @@ export default function App() {
                         <ChevronRight size={14} />
                       </div>
                     ))}
+                  </div>
+
+                  <div className="filter-section-title">
+                    <Filter size={14} style={{ display: 'inline', marginRight: '6px' }} /> Filter by Color
+                  </div>
+                  <div className="filter-list">
+                    <div 
+                      className={`filter-item ${selectedColor === 'All' ? 'active' : ''}`}
+                      onClick={() => setSelectedColor('All')}
+                    >
+                      <span>🎨 All Colors</span>
+                    </div>
+                    {Array.from(new Set(ECOM_PRODUCTS.map(p => p.colorName))).map(cName => {
+                      const colorObj = ECOM_PRODUCTS.find(p => p.colorName === cName);
+                      return (
+                        <div 
+                          key={cName}
+                          className={`filter-item ${selectedColor === cName ? 'active' : ''}`}
+                          onClick={() => setSelectedColor(cName)}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <span style={{ 
+                              width: '10px', 
+                              height: '10px', 
+                              borderRadius: '50%', 
+                              background: colorObj?.colorHex || '#ccc',
+                              border: '1px solid #cbd5e1',
+                              display: 'inline-block'
+                            }} />
+                            <span>{cName}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -533,6 +600,23 @@ export default function App() {
 
                       <div>
                         <div className="ecom-product-title">{product.name}</div>
+                        
+                        {/* Color Swatch Badge */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '4px 0 8px' }}>
+                          <span style={{ 
+                            width: '11px', 
+                            height: '11px', 
+                            borderRadius: '50%', 
+                            background: product.colorHex,
+                            border: '1px solid #94a3b8',
+                            display: 'inline-block',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.15)'
+                          }} />
+                          <span style={{ fontSize: '11px', color: '#52525b', fontWeight: '600' }}>
+                            Color: <strong style={{ color: '#27272a' }}>{product.colorName}</strong>
+                          </span>
+                        </div>
+
                         <div className="ecom-rating-row">
                           <Star size={14} fill="#ea580c" color="#ea580c" />
                           <span style={{ fontWeight: 'bold' }}>{product.rating}</span>
