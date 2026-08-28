@@ -12,16 +12,17 @@ interface ProductItem extends CatalogItem {
   rating: number;
   reviews: number;
   mrp: number;
+  image: string;
 }
 
 // Mock Amazon / Flipkart style apparel & textile wholesale catalog
 const ECOM_PRODUCTS: ProductItem[] = [
-  { id: 'cat_01', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 1420, category: 'Apparel & Clothing', icon: '👕' },
-  { id: 'cat_02', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.7, reviews: 980, category: 'Apparel & Clothing', icon: '👖' },
-  { id: 'cat_03', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.9, reviews: 2150, category: 'Apparel & Clothing', icon: '👔' },
-  { id: 'cat_04', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 1120, category: 'Curtains & Drapes', icon: '🪟' },
-  { id: 'cat_05', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.9, reviews: 3400, category: 'Bed Sheets & Bedding', icon: '🛏️' },
-  { id: 'cat_06', name: 'Raw Organic Linen Fabric Bolt (10 Yards)', price: 64.99, mrp: 89.99, rating: 4.8, reviews: 790, category: 'Linen & Fabrics', icon: '🧵' }
+  { id: 'cat_01', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 1420, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png' },
+  { id: 'cat_02', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.7, reviews: 980, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png' },
+  { id: 'cat_03', name: 'Formal Linen Shirts Set (6x)', price: 74.99, mrp: 99.99, rating: 4.9, reviews: 2150, category: 'Apparel & Clothing', icon: '👔', image: '/assets/linen_shirts.png' },
+  { id: 'cat_04', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 1120, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png' },
+  { id: 'cat_05', name: 'Egyptian Cotton 800-TC King Bed Sheet Set', price: 54.99, mrp: 79.99, rating: 4.9, reviews: 3400, category: 'Bed Sheets & Bedding', icon: '🛏️', image: '/assets/bed_sheets.png' },
+  { id: 'cat_06', name: 'Raw Organic Linen Fabric Bolt (10 Yards)', price: 64.99, mrp: 89.99, rating: 4.8, reviews: 790, category: 'Linen & Fabrics', icon: '🧵', image: '/assets/fabric_bolt.png' }
 ];
 
 const RETAILER_FRANCHISE_MAP: Record<string, string> = {
@@ -527,7 +528,7 @@ export default function App() {
                       <span className="prime-tag">⚡ Express</span>
                       
                       <div className="ecom-product-img-box">
-                        {product.icon}
+                        <img src={product.image} alt={product.name} className="product-real-img" />
                       </div>
 
                       <div>
