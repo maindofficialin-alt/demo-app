@@ -135,6 +135,7 @@ export default function App() {
   const [cart, setCart] = useState<Record<string, number>>({});
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [checkoutStep, setCheckoutStep] = useState<'cart' | 'shipping_payment'>('cart');
+  const [activeInvoiceOrderId, setActiveInvoiceOrderId] = useState<string | null>(null);
 
   // Shipping Address Form State
   const [shipName, setShipName] = useState<string>('Retailer East Branch - John Doe');
@@ -691,7 +692,7 @@ export default function App() {
 
                         <div>
                           <div className="summary-block-label">ORDER # {order.id}</div>
-                          <div className="summary-block-val" style={{ color: '#ea580c', cursor: 'pointer' }}>View Invoice Details</div>
+                          <div className="summary-block-val" style={{ color: '#ea580c', cursor: 'pointer' }} onClick={() => setActiveInvoiceOrderId(order.id)}>View Invoice Details</div>
                         </div>
                       </div>
 
@@ -939,6 +940,72 @@ export default function App() {
                 )}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* IN-TAB INVOICE MODAL */}
+      {activeInvoiceOrderId && (
+        <div className="cart-overlay" onClick={() => setActiveInvoiceOrderId(null)}>
+          <div className="drilldown-panel-card" style={{ maxWidth: '600px', width: '90%', margin: 'auto', maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+            {(() => {
+              const invOrder = orders.find(o => o.id === activeInvoiceOrderId);
+              if (!invOrder) return null;
+
+              return (
+                <div>
+                  <div className="drilldown-header" style={{ marginBottom: '16px' }}>
+                    <div>
+                      <h2>🧾 Tax Invoice Summary #{invOrder.id}</h2>
+                      <p>Official wholesale sales receipt & delivery confirmation</p>
+                    </div>
+                    <button className="admin-pill-btn" onClick={() => setActiveInvoiceOrderId(null)}>
+                      <X size={18} /> Close
+                    </button>
+                  </div>
+
+                  <div style={{ background: '#f8f6f0', padding: '16px', borderRadius: '12px', marginBottom: '16px', fontSize: '13px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      <div>
+                        <strong>Billed To:</strong>
+                        <div>{invOrder.shippingAddress?.fullName || currentUser.name}</div>
+                        <div>{invOrder.shippingAddress?.street}</div>
+                        <div>{invOrder.shippingAddress?.cityStateZip}</div>
+                        <div>Phone: {invOrder.shippingAddress?.phone}</div>
+                      </div>
+
+                      <div>
+                        <strong>Fulfilled By:</strong>
+                        <div>{invOrder.franchiseId}</div>
+                        <div>Payment: {invOrder.paymentMethod}</div>
+                        <div>Date: {invOrder.timestamp}</div>
+                        <div>Status: <strong style={{ color: '#059669' }}>{invOrder.status}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="metrics-table-grid" style={{ marginBottom: '16px' }}>
+                    <div className="metric-box-subcard" style={{ gridColumn: '1 / -1' }}>
+                      <div className="subcard-title">Itemized Order Breakdown</div>
+                      {invOrder.items.map(item => (
+                        <div key={item.id} className="stat-row-item">
+                          <span>{item.name} (x{item.quantity})</span>
+                          <strong>${(item.price * item.quantity).toFixed(2)}</strong>
+                        </div>
+                      ))}
+                      <div className="stat-row-item" style={{ borderTop: '1px solid #e2ddd3', paddingTop: '8px', fontSize: '15px', fontWeight: 'bold' }}>
+                        <span>Total Payable</span>
+                        <strong style={{ color: '#ea580c' }}>${invOrder.totalPrice.toFixed(2)}</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button className="btn-proceed-checkout" onClick={() => setActiveInvoiceOrderId(null)}>
+                    Done Viewing Invoice (Return)
+                  </button>
+                </div>
+              );
+            })()}
           </div>
         </div>
       )}
