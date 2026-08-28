@@ -21,13 +21,13 @@ interface ProductItem extends CatalogItem {
 const ECOM_PRODUCTS: ProductItem[] = [
   // Apparel & Clothing - T-Shirts
   { id: 'cat_01a', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 1420, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Bright White', colorHex: '#ffffff' },
-  { id: 'cat_01b', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.9, reviews: 1180, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Onyx Black', colorHex: '#18181b' },
-  { id: 'cat_01c', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.7, reviews: 920, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Navy Blue', colorHex: '#1e3a8a' },
+  { id: 'cat_01b', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.9, reviews: 1180, category: 'Apparel & Clothing', icon: '👕', image: '/assets/tshirt_black.png', colorName: 'Onyx Black', colorHex: '#18181b' },
+  { id: 'cat_01c', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.7, reviews: 920, category: 'Apparel & Clothing', icon: '👕', image: '/assets/tshirt_navy.png', colorName: 'Navy Blue', colorHex: '#1e3a8a' },
   { id: 'cat_01d', name: 'Premium Cotton T-Shirts Pack (10x)', price: 49.99, mrp: 69.99, rating: 4.8, reviews: 850, category: 'Apparel & Clothing', icon: '👕', image: '/assets/cotton_tshirts.png', colorName: 'Heather Grey', colorHex: '#9ca3af' },
 
   // Apparel & Clothing - Denim Jeans
   { id: 'cat_02a', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.7, reviews: 980, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png', colorName: 'Raw Indigo Blue', colorHex: '#1d4ed8' },
-  { id: 'cat_02b', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.9, reviews: 1250, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png', colorName: 'Jet Black', colorHex: '#09090b' },
+  { id: 'cat_02b', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.9, reviews: 1250, category: 'Apparel & Clothing', icon: '👖', image: '/assets/jeans_black.png', colorName: 'Jet Black', colorHex: '#09090b' },
   { id: 'cat_02c', name: 'Heavyweight Denim Jeans (5x Bulk)', price: 89.99, mrp: 119.99, rating: 4.6, reviews: 740, category: 'Apparel & Clothing', icon: '👖', image: '/assets/denim_jeans.png', colorName: 'Vintage Light Blue', colorHex: '#60a5fa' },
 
   // Apparel & Clothing - Formal Linen Shirts
@@ -38,8 +38,8 @@ const ECOM_PRODUCTS: ProductItem[] = [
 
   // Curtains & Drapes
   { id: 'cat_04a', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 1120, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Emerald Green', colorHex: '#047857' },
-  { id: 'cat_04b', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.9, reviews: 1430, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Royal Navy', colorHex: '#1e1b4b' },
-  { id: 'cat_04c', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.7, reviews: 880, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Wine Crimson', colorHex: '#881337' },
+  { id: 'cat_04b', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.9, reviews: 1430, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/curtains_navy.png', colorName: 'Royal Navy', colorHex: '#1e1b4b' },
+  { id: 'cat_04c', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.7, reviews: 880, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/curtains_crimson.png', colorName: 'Wine Crimson', colorHex: '#881337' },
   { id: 'cat_04d', name: 'Velvet Blackout Window Curtains (Pair)', price: 34.99, mrp: 49.99, rating: 4.8, reviews: 950, category: 'Curtains & Drapes', icon: '🪟', image: '/assets/velvet_curtains.png', colorName: 'Charcoal Grey', colorHex: '#3f3f46' },
 
   // Bed Sheets & Bedding
